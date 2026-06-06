@@ -10,6 +10,6 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node10"
   }
 }

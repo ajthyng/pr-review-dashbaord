@@ -5,7 +5,6 @@
     "rootDir": "./src",
     "baseUrl": "./",
     "incremental": true,
-    "module": "Node16",
     "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*"],
