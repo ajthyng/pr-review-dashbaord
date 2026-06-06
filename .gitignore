@@ -8,3 +8,7 @@ coverage
 apps/web/dist
 apps/api/public/*
 !apps/api/public/.gitkeep
+.DS_Store
+.env.development.local
+.env.test.local
+.env.production.local
