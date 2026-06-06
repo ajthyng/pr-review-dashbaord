@@ -11,6 +11,7 @@
     "test": "turbo test",
     "lint": "turbo lint"
   },
+  "packageManager": "npm@11.13.0",
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=10.0.0"
