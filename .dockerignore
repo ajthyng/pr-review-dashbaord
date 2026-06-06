@@ -1,0 +1,11 @@
+.git
+.env
+.env.local
+node_modules
+apps/*/node_modules
+apps/*/dist
+apps/api/public/*
+!apps/api/public/.gitkeep
+coverage
+*.log
+.turbo
