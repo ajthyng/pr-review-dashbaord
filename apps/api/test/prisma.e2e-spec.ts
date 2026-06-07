@@ -4,10 +4,11 @@ import { PrismaModule } from '../src/prisma/prisma.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 
 describe('PrismaService (e2e)', () => {
+  let module: TestingModule;
   let prismaService: PrismaService;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true, envFilePath: '../../.env' }),
         PrismaModule,
@@ -18,7 +19,7 @@ describe('PrismaService (e2e)', () => {
   });
 
   afterAll(async () => {
-    await prismaService.$disconnect();
+    await module.close();
   });
 
   it('connects to the database', async () => {
