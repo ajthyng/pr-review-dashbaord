@@ -46,7 +46,7 @@ enum SyncStatus {
 
 model User {
   id        Int      @id @default(autoincrement())
-  githubId  Int      @unique
+  githubId  BigInt   @unique
   login     String   @unique
   name      String?
   avatarUrl String?
@@ -59,7 +59,7 @@ model User {
 
 model Repo {
   id           Int       @id @default(autoincrement())
-  githubId     Int       @unique
+  githubId     BigInt    @unique
   fullName     String    @unique
   name         String
   isArchived   Boolean   @default(false)
@@ -84,7 +84,7 @@ model UserRepoAllowlist {
 
 model PullRequest {
   id              Int            @id @default(autoincrement())
-  githubId        Int            @unique
+  githubId        BigInt         @unique
   repoId          Int
   number          Int
   title           String
@@ -107,17 +107,20 @@ model PullRequest {
   reviews Review[]
 
   @@unique([repoId, number])
+  @@index([repoId, state])
+  @@index([lastActivityAt])
 }
 
 model Review {
   id                Int         @id @default(autoincrement())
-  githubId          Int         @unique
+  githubId          BigInt      @unique
   pullRequestId     Int
   reviewerLogin     String
   reviewerAvatarUrl String?
   state             ReviewState
   submittedAt       DateTime
   createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 
   pullRequest PullRequest @relation(fields: [pullRequestId], references: [id], onDelete: Cascade)
 }
