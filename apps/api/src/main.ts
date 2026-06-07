@@ -20,6 +20,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, document);
 
+  app.enableShutdownHooks();
+
   const configService = app.get(ConfigService);
   const port = parseInt(configService.get('PORT', '3000'), 10);
   await app.listen(port);

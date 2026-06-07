@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:24-alpine3.23 AS builder
 WORKDIR /app
 
 # Copy manifests first for layer caching
@@ -19,7 +19,7 @@ RUN cp -r apps/web/dist/. apps/api/public/
 RUN npm run build -w @pr-review/api
 
 # Production stage — reinstall only prod deps to keep image small
-FROM node:20-alpine AS runner
+FROM node:24-alpine3.23 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 

@@ -9,8 +9,7 @@ import { HealthModule } from './health/health.module';
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      exclude: ['/api*'],
-      serveStaticOptions: { fallthrough: false },
+      exclude: ['/api{/*path}'],
     }),
     HealthModule,
   ],
