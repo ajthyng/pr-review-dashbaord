@@ -1,7 +1,9 @@
 {
   "extends": "@pr-review/typescript-config/react.json",
   "compilerOptions": {
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": ["src"],
   "references": []
