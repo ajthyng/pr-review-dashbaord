@@ -10,6 +10,7 @@ import { HealthModule } from './health/health.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*'],
+      serveStaticOptions: { fallthrough: false },
     }),
     HealthModule,
   ],
