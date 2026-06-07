@@ -9,7 +9,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "test": "turbo test",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "docker:build": "sh scripts/docker-build.sh",
+    "docker:run": "sh scripts/docker-run.sh"
   },
   "packageManager": "npm@11.13.0",
   "engines": {
