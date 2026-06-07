@@ -30,6 +30,7 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/apps/api/public ./apps/api/public
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 EXPOSE 3000
 CMD ["node", "apps/api/dist/main.js"]
