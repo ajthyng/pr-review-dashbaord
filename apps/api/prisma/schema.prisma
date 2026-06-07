@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum PrState {
+  OPEN
+  CLOSED
+  MERGED
+}
+
+enum ReviewDecision {
+  NONE
+  REVIEW_REQUIRED
+  CHANGES_REQUESTED
+  APPROVED
+}
+
+enum CiStatus {
+  NONE
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILURE
+}
+
+enum ReviewState {
+  APPROVED
+  CHANGES_REQUESTED
+  COMMENTED
+  DISMISSED
+}
+
+enum SyncStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+model User {
+  id        Int      @id @default(autoincrement())
+  githubId  Int      @unique
+  login     String   @unique
+  name      String?
+  avatarUrl String?
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  repoAllowlist UserRepoAllowlist[]
+}
+
+model Repo {
+  id           Int       @id @default(autoincrement())
+  githubId     Int       @unique
+  fullName     String    @unique
+  name         String
+  isArchived   Boolean   @default(false)
+  syncedAt     DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  pullRequests  PullRequest[]
+  allowlistedBy UserRepoAllowlist[]
+}
+
+model UserRepoAllowlist {
+  userId    Int
+  repoId    Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  repo Repo @relation(fields: [repoId], references: [id], onDelete: Cascade)
+
+  @@id([userId, repoId])
+}
+
+model PullRequest {
+  id              Int            @id @default(autoincrement())
+  githubId        Int            @unique
+  repoId          Int
+  number          Int
+  title           String
+  authorLogin     String
+  authorAvatarUrl String?
+  state           PrState
+  isDraft         Boolean        @default(false)
+  reviewDecision  ReviewDecision @default(NONE)
+  ciStatus        CiStatus       @default(NONE)
+  commentCount    Int            @default(0)
+  commitCount     Int            @default(0)
+  openedAt        DateTime
+  mergedAt        DateTime?
+  closedAt        DateTime?
+  lastActivityAt  DateTime
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  repo    Repo     @relation(fields: [repoId], references: [id], onDelete: Cascade)
+  reviews Review[]
+
+  @@unique([repoId, number])
+}
+
+model Review {
+  id                Int         @id @default(autoincrement())
+  githubId          Int         @unique
+  pullRequestId     Int
+  reviewerLogin     String
+  reviewerAvatarUrl String?
+  state             ReviewState
+  submittedAt       DateTime
+  createdAt         DateTime    @default(now())
+
+  pullRequest PullRequest @relation(fields: [pullRequestId], references: [id], onDelete: Cascade)
+}
+
+model SyncLog {
+  id             Int        @id @default(autoincrement())
+  startedAt      DateTime   @default(now())
+  completedAt    DateTime?
+  status         SyncStatus
+  errorMessage   String?
+  reposProcessed Int        @default(0)
+  prsProcessed   Int        @default(0)
+}
